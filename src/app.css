@@ -1,1 +1,5 @@
 @import 'tailwindcss';
+
+.btn {
+	@apply rounded-sm bg-blue-500 px-1.5 py-1 text-sm text-white hover:bg-blue-600;
+}
