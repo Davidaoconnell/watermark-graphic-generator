@@ -69,31 +69,35 @@
 			</svg>
 		</button>
 
-		<label for="scale">Scale</label>
-		<input
-			name="scale"
-			type="number"
-			class="border [&::-webkit-inner-spin-button]:opacity-100 [&::-webkit-outer-spin-button]:opacity-100"
-			bind:value={scale}
-			step="0.1"
-		/>
+		<div>
+			<label for="scale">Scale</label>
+			<input
+				name="scale"
+				type="number"
+				class="border [&::-webkit-inner-spin-button]:opacity-100 [&::-webkit-outer-spin-button]:opacity-100"
+				bind:value={scale}
+				step="0.1"
+			/>
+		</div>
 
 		<form method="POST" use:enhance>
-			<label for="text">Input Text</label>
-			<input
-				class="border"
-				type="text"
-				name="text"
-				aria-invalid={$errors.text ? 'true' : undefined}
-				bind:value={$form.text}
-				{...$constraints.text}
-			/>
-			{#if $errors.text}<span class="text-red-500">{$errors.text}</span>{/if}
-			<button class="btn">Submit</button>
+			<div class="flex flex-col gap-y-2">
+				<label for="text">Calendar Data (copy paste mon-sun)</label>
+				<input
+					class="border"
+					type="text"
+					name="text"
+					aria-invalid={$errors.text ? 'true' : undefined}
+					bind:value={$form.text}
+					{...$constraints.text}
+				/>
+				{#if $errors.text}<span class="text-red-500">{$errors.text}</span>{/if}
+				<button class="btn">Submit</button>
+			</div>
 		</form>
 
 		<button
-			class="btn flex items-center gap-x-2"
+			class="btn mt-2 flex items-center gap-x-2"
 			onclick={(e) => {
 				e.preventDefault();
 				window.print();
