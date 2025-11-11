@@ -12,9 +12,9 @@ export async function handle({ event, resolve }) {
 		});
 	}
 
-	// Decode the base64 credentials
+	// Decode the base64 credentials using atob (works in Cloudflare Workers)
 	const base64Credentials = authHeader.split(' ')[1];
-	const credentials = Buffer.from(base64Credentials, 'base64').toString('utf-8');
+	const credentials = atob(base64Credentials);
 	const [username, password] = credentials.split(':');
 
 	// Check credentials
