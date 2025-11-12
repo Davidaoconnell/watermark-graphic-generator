@@ -53,12 +53,21 @@
 					</div>
 
 					<div class="space-y-2">
-						{#each day.events as event}
+						{#if day.events.length > 0}
+							{#each day.events as event}
+								<div class="flex justify-between gap-8 text-[1.3rem] leading-none">
+									{#if event.time && event.time.trim() !== ''}
+										<span class=" w-40 shrink-0 text-gray-900">{event.time}</span>
+									{/if}
+									<span class="text-gray-800">{event.activities.join(', ')}</span>
+								</div>
+							{/each}
+						{:else}
 							<div class="flex justify-between gap-8 text-[1.3rem] leading-none">
-								<span class=" w-40 shrink-0 text-gray-900">{event.time}</span>
-								<span class="text-gray-800">{event.activities.join(', ')}</span>
+								<span class="w-40 shrink-0"></span>
+								<span class="text-gray-800">No Activities Scheduled</span>
 							</div>
-						{/each}
+						{/if}
 					</div>
 				</div>
 			{/each}
