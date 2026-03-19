@@ -8,6 +8,8 @@
 	const { form, errors, constraints, message, enhance, submitting } = superForm(data.form);
 	// let maxContentHeight = 1536;
 	let scale = $state(1.6);
+	let daySpacing = $state(40);
+	let verticalOffset = $state(0);
 
 	let displaySchedule = $derived($message?.week ? $message : null);
 
@@ -22,8 +24,8 @@
 
 <div class="flex h-full items-center justify-center">
 	<div
-		class="textToResize mx-auto flex h-[80%] max-w-[90%] origin-center flex-col justify-center space-y-10 px-10"
-		style={`transform: scale(${scale});`}
+		class="textToResize mx-auto flex h-[80%] max-w-[90%] origin-center flex-col justify-center px-10"
+		style={`transform: translateY(${verticalOffset}px) scale(${scale}); gap: ${daySpacing}px;`}
 	>
 		{#if $submitting}
 			<div class="flex flex-col items-center justify-center space-y-4">
@@ -56,9 +58,9 @@
 						{#if day.events.length > 0}
 							{#each day.events as event}
 								<div class="flex justify-between gap-8 text-[1.3rem] leading-none">
-									{#if event.time && event.time.trim() !== ''}
-										<span class=" w-40 shrink-0 text-gray-900">{event.time}</span>
-									{/if}
+									<span class="w-40 shrink-0 text-gray-900">
+										{event.time && event.time.trim() !== '' ? event.time : ''}
+									</span>
 									<span class="text-gray-800">{event.activities.join(', ')}</span>
 								</div>
 							{/each}
@@ -106,6 +108,28 @@
 				class="border [&::-webkit-inner-spin-button]:opacity-100 [&::-webkit-outer-spin-button]:opacity-100"
 				bind:value={scale}
 				step="0.1"
+			/>
+		</div>
+
+		<div class="mt-2">
+			<label for="daySpacing">Day spacing</label>
+			<input
+				name="daySpacing"
+				type="number"
+				class="border [&::-webkit-inner-spin-button]:opacity-100 [&::-webkit-outer-spin-button]:opacity-100"
+				bind:value={daySpacing}
+				step="1"
+			/>
+		</div>
+
+		<div class="mt-2">
+			<label for="verticalOffset">Vertical offset</label>
+			<input
+				name="verticalOffset"
+				type="number"
+				class="border [&::-webkit-inner-spin-button]:opacity-100 [&::-webkit-outer-spin-button]:opacity-100"
+				bind:value={verticalOffset}
+				step="1"
 			/>
 		</div>
 

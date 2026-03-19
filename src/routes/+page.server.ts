@@ -31,14 +31,33 @@ export const actions = {
 
 		const response = await client.responses.parse({
 			model: 'gpt-5',
-			input: form.data.text,
+			input: `Convert the pasted weekly schedule into the requested JSON schema.
+
+Rules:
+- Preserve the event order exactly as it appears within each day.
+- If a line is an event or notice without a time, include it as an event with an empty time string.
+- Cancellation notices such as "ELECTION DAY-ALL PROGRAMS CANCELED" must be preserved as activities even when they have no time.
+- Put each schedule line into the correct day.
+- Keep activity wording faithful to the source text.
+
+Schedule text:
+${form.data.text}`,
 			text: {
 				format: zodTextFormat(WeeklyScheduleSchema, 'weekly_schedule')
 			}
 		});
 
 		// Extract the parsed schedule from the response
-		const schedule = response.output_parsed;
+		const schedule = {
+			week:
+				response.output_parsed?.week.map((day) => ({
+					...day,
+					events: day.events.map((event) => ({
+						time: event.time?.trim() ?? '',
+						activities: event.activities.map((activity) => activity.trim()).filter(Boolean)
+					}))
+				})) ?? []
+		};
 		console.log('Extracted schedule:', schedule);
 
 		return message(form, schedule);
