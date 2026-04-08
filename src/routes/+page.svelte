@@ -10,6 +10,8 @@
 	let scale = $state(1.6);
 	let daySpacing = $state(40);
 	let verticalOffset = $state(0);
+	let dayHeadingSize = $state(1.875);
+	let eventTextSize = $state(1.3);
 
 	let displaySchedule = $derived($message?.week ? $message : null);
 
@@ -51,21 +53,32 @@
 			{#each displaySchedule.week as day}
 				<div class="space-y-2">
 					<div>
-						<h2 class="text-3xl leading-none font-bold text-[#2e426c]">{day.dayOfWeek}</h2>
+						<h2
+							class="leading-none font-bold text-[#2e426c]"
+							style={`font-size: ${dayHeadingSize}rem;`}
+						>
+							{day.dayOfWeek}
+						</h2>
 					</div>
 
 					<div class="space-y-2">
 						{#if day.events.length > 0}
 							{#each day.events as event}
-								<div class="flex justify-between gap-8 text-[1.3rem] leading-none">
+								<div
+									class="flex justify-between gap-8 leading-none"
+									style={`font-size: ${eventTextSize}rem;`}
+								>
 									<span class="w-40 shrink-0 text-gray-900">
 										{event.time && event.time.trim() !== '' ? event.time : ''}
 									</span>
-									<span class="text-gray-800">{event.activities.join(', ')}</span>
+									<span class="text-right text-gray-800">{event.activities.join(', ')}</span>
 								</div>
 							{/each}
 						{:else}
-							<div class="flex justify-between gap-8 text-[1.3rem] leading-none">
+							<div
+								class="flex justify-between gap-8 text-right leading-none"
+								style={`font-size: ${eventTextSize}rem;`}
+							>
 								<span class="w-40 shrink-0"></span>
 								<span class="text-gray-800">No Activities Scheduled</span>
 							</div>
@@ -130,6 +143,28 @@
 				class="border [&::-webkit-inner-spin-button]:opacity-100 [&::-webkit-outer-spin-button]:opacity-100"
 				bind:value={verticalOffset}
 				step="1"
+			/>
+		</div>
+
+		<div class="mt-2">
+			<label for="dayHeadingSize">Day heading size (rem)</label>
+			<input
+				name="dayHeadingSize"
+				type="number"
+				class="border [&::-webkit-inner-spin-button]:opacity-100 [&::-webkit-outer-spin-button]:opacity-100"
+				bind:value={dayHeadingSize}
+				step="0.1"
+			/>
+		</div>
+
+		<div class="mt-2">
+			<label for="eventTextSize">Event text size (rem)</label>
+			<input
+				name="eventTextSize"
+				type="number"
+				class="border [&::-webkit-inner-spin-button]:opacity-100 [&::-webkit-outer-spin-button]:opacity-100"
+				bind:value={eventTextSize}
+				step="0.1"
 			/>
 		</div>
 
