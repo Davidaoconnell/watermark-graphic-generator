@@ -1,7 +1,7 @@
 import type { PageServerLoad } from './$types';
 import { fail } from '@sveltejs/kit';
 import OpenAI from 'openai';
-import { OPENAI_API_KEY } from '$env/static/private';
+import { OPENAI_API_KEY, AZURE_OPEN_AI_BASE_URL } from '$env/static/private';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import { formSchema, WeeklyScheduleSchema } from './schema';
@@ -26,11 +26,12 @@ export const actions = {
 
 		// form data is valid do the ai stuff
 		const client = new OpenAI({
-			apiKey: OPENAI_API_KEY
+			apiKey: OPENAI_API_KEY,
+			baseURL:AZURE_OPEN_AI_BASE_URL
 		});
 
 		const response = await client.responses.parse({
-			model: 'gpt-5',
+			model: 'gpt-chat-latest',
 			input: `Convert the pasted weekly schedule into the requested JSON schema.
 
 Rules:
